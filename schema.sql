@@ -22,12 +22,12 @@ CREATE TABLE employees
 -- Create the table of roles.
 CREATE TABLE roles
 (
-  PRIMARY KEY
-  (id),
+  
+  role_id INT,
   title varchar
   (30) NOT NULL,
   salary int NOT NULL,
-  department_id int
+  department varchar (30)
   NOT NULL
 );
 
@@ -74,37 +74,37 @@ CREATE TABLE departments
 
 -- Insert in the roles
   INSERT INTO roles
-    (role_id, title, salary, department_id)
+    (role_id, title, salary, department)
   VALUES
-    (1, "Sales Lead", 100000, 1);
+    (1, "Sales Lead", 100000, "Sales");
   INSERT INTO roles
-    (role_id, title, salary, department_id)
+    (role_id, title, salary, department)
   VALUES
-    (2, "Salesperson", 80000, 1);
+    (2, "Salesperson", 80000, "Sales");
   INSERT INTO roles
-    (role_id, title, salary, department_id)
+    (role_id, title, salary, department)
   VALUES
-    (3, "Lead Engineer", 150000, 2);
+    (3, "Lead Engineer", 150000, "Engineering");
   INSERT INTO roles
-    (role_id, title, salary, department_id)
+    (role_id, title, salary, department)
   VALUES
-    (4, "Software Engineer", 120000, 2);
+    (4, "Software Engineer", 120000, "Engineering");
   INSERT INTO roles
-    (role_id, title, salary, department_id)
+    (role_id, title, salary, department)
   VALUES
-    (5, "Accountant", 125000, 3);
+    (5, "Accountant", 125000, "Finance");
   INSERT INTO roles
-    (role_id, title, salary, department_id)
+    (role_id, title, salary, department)
   VALUES
-    (6, "Legal Team Lead", 250000, 4);
+    (6, "Legal Team Lead", 250000, "Legal");
   INSERT INTO roles
-    (role_id, title, salary, department_id)
+    (role_id, title, salary, department)
   VALUES
-    (7, "Lawyer", 190000, 4);
+    (7, "Lawyer", 190000, "Legal");
   INSERT INTO roles
-    (role_id, title, salary, department_id)
+    (role_id, title, salary, department)
   VALUES
-    (8, "Lead Engineer", 190000, 2);
+    (8, "Lead Engineer", 190000, "Engineering");
 
 -- Insert a set of departments.
   INSERT INTO departments

@@ -31,7 +31,8 @@ function runSearch() {
         "Add Employee",
         "Remove Employee",
         "Update Employee Role",
-        "Update Employee Manager"
+        "Update Employee Manager",
+        "Exit"
       ]
     })
     .then(function(answer) {
@@ -44,8 +45,8 @@ function runSearch() {
         deptSearch();
         break;
 
-      case "Find data within a specific range":
-        rangeSearch();
+      case "View All Employees By Manager":
+        managerSearch();
         break;
 
       case "Search for a specific song":
@@ -60,99 +61,77 @@ function runSearch() {
 }
 
 function employeeSearch() {
-  connection.query("SELECT * FROM employeedirectory.employees;", function(err, rows, fields) {
+  connection.query("SELECT employees.manager_id, employees.first_name, employees.last_name, roles.title, roles.department, roles.salary, employees.manager_id   FROM employees LEFT JOIN roles ON employees.role_id = roles.role_id;", function(err, rows, fields) {
     if (err) throw err;
+
     console.table(rows);
 
-
+    runSearch()
   });
 } 
-  
-//   orm.leftJoin(["first_name", "last_name", "title", "department", "salary", "manager_id"], "employees", "departments", "roles", "role_id", "department_id");
-// };
-  
-  // inquirer
-    // .prompt({
-    //   name: "artist",
-    //   type: "input",
-    //   message: "What artist would you like to search for?"
-    // })
-    // .then(function(answer) {
-    //   var query = "SELECT position, song, year FROM top5000 WHERE ?";
-    //   connection.query(query, { artist: answer.artist }, function(err, res) {
-        // console.table(res);
-        // console.log(res);
 
-        // for (var i = 0; i < res.length; i++) {
-           // console.log("Position: " + res[i].position + " || Song: " + res[i].song + " || Year: " + res[i].year);
+function deptSearch() {
+  connection.query("SELECT roles.department, employees.first_name, employees.last_name, roles.title, roles.salary, employees.manager_id   FROM employees LEFT JOIN roles ON employees.role_id = roles.role_id ORDER BY roles.department;", function(err, rows, fields) {
+    if (err) throw err;
 
-        // }
-//         var resultArray = res;
+    console.table(rows); 
+    
+    runSearch()
+});
+}
 
-
-// console.log(resultArray)
-
-
+function managerSearch() {
+  connection.query("SELECT employees.manager_id, employees.first_name, employees.last_name, roles.title, roles.department, roles.salary, employees.manager_id   FROM employees LEFT JOIN roles ON employees.role_id = roles.role_id ORDER BY employees.manager_id;", function(err, rows, fields) {
+    if (err) throw err;  
+    console.table(rows); 
+    
+    runSearch()
+  });
+};
+//   inquirer
+//     .prompt([
+//       {
+//         name: "start",
+//         type: "input",
+//         message: "Enter starting position: ",
+//         validate: function(value) {
+//           if (isNaN(value) === false) {
+//             return true;
+//           }
+//           return false;
+//         }
+//       },
+//       {
+//         name: "end",
+//         type: "input",
+//         message: "Enter ending position: ",
+//         validate: function(value) {
+//           if (isNaN(value) === false) {
+//             return true;
+//           }
+//           return false;
+//         }
+//       }
+//     ])
+//     .then(function(answer) {
+//       var query = "SELECT position,song,artist,year FROM top5000 WHERE position BETWEEN ? AND ?";
+//       connection.query(query, [answer.start, answer.end], function(err, res) {
+//         for (var i = 0; i < res.length; i++) {
+//           console.log(
+//             "Position: " +
+//               res[i].position +
+//               " || Song: " +
+//               res[i].song +
+//               " || Artist: " +
+//               res[i].artist +
+//               " || Year: " +
+//               res[i].year
+//           );
+//         }
 //         runSearch();
 //       });
 //     });
 // }
-
-function deptSearch() {
-  var query = "SELECT artist FROM top5000 GROUP BY artist HAVING count(*) > 1";
-  connection.query(query, function(err, res) {
-    for (var i = 0; i < res.length; i++) {
-      console.log(res[i].artist);
-    }
-    runSearch();
-  });
-}
-
-function rangeSearch() {
-  inquirer
-    .prompt([
-      {
-        name: "start",
-        type: "input",
-        message: "Enter starting position: ",
-        validate: function(value) {
-          if (isNaN(value) === false) {
-            return true;
-          }
-          return false;
-        }
-      },
-      {
-        name: "end",
-        type: "input",
-        message: "Enter ending position: ",
-        validate: function(value) {
-          if (isNaN(value) === false) {
-            return true;
-          }
-          return false;
-        }
-      }
-    ])
-    .then(function(answer) {
-      var query = "SELECT position,song,artist,year FROM top5000 WHERE position BETWEEN ? AND ?";
-      connection.query(query, [answer.start, answer.end], function(err, res) {
-        for (var i = 0; i < res.length; i++) {
-          console.log(
-            "Position: " +
-              res[i].position +
-              " || Song: " +
-              res[i].song +
-              " || Artist: " +
-              res[i].artist +
-              " || Year: " +
-              res[i].year
-          );
-        }
-        runSearch();
-      });
-    });
-}
 
 function songSearch() {
   inquirer
@@ -178,7 +157,25 @@ function songSearch() {
       });
     });
 }
-
+function enterNew() {
+  inquirer
+    .prompt([
+      {
+        type: "confirm",
+        name: "choice",
+        message: "Continue?"
+      }
+    ])
+    .then(val => {
+      // If the user says yes to end, sort again, otherwise quit the directory
+      if (val.choice) {
+        init();
+      } else {
+        // this.quit();
+        process.exit(1);
+      }
+    })
+  };
 function songAndAlbumSearch() {
   inquirer
     .prompt({
@@ -212,4 +209,5 @@ function songAndAlbumSearch() {
         runSearch();
       });
     });
-}
+  }
+
