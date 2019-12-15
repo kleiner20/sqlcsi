@@ -5,7 +5,6 @@ var orm = require("./config/orm.js");
 
 var connection = mysql.createConnection({
   host: "localhost",
-  port: 3306,
   user: "root",
   password: "Mysqul20!",
   database: "employeedirectory"
@@ -61,8 +60,16 @@ function runSearch() {
 }
 
 function employeeSearch() {
-  orm.leftJoin(["first_name", "last_name", "title", "department", "salary", "manager_id"], "employees", "departments", "roles", "id", "client_id");
-};
+  connection.query("SELECT * FROM employeedirectory.employees;", function(err, rows, fields) {
+    if (err) throw err;
+    console.table(rows);
+
+
+  });
+} 
+  
+//   orm.leftJoin(["first_name", "last_name", "title", "department", "salary", "manager_id"], "employees", "departments", "roles", "role_id", "department_id");
+// };
   
   // inquirer
     // .prompt({

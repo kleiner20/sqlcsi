@@ -35,7 +35,7 @@ CREATE TABLE roles
 CREATE TABLE departments
 (
   PRIMARY KEY
-  (id),
+  (department_id),
   department VARCHAR (30) NOT NULL
 );
   -- Insert a set of records.
@@ -108,14 +108,14 @@ CREATE TABLE departments
 
 -- Insert a set of departments.
   INSERT INTO departments
-    (id, department)
+    (department_id, department)
   VALUES
     (1, "Sales");
    INSERT INTO departments
-    (id, department)
+    (department_id, department)
   VALUES
     (2, "Engineering"); 
    INSERT INTO departments
-    (id, department)
+    (department_id, department)
   VALUES
     (3, "Finance");   
